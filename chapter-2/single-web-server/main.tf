@@ -2,7 +2,7 @@ resource "aws_instance" "webserver" {
   ami                         = "ami-0a72af05d27b49ccb"
   instance_type               = "t2.micro"
   vpc_security_group_ids      = [aws_security_group.webserver.id]
-  user_data = <<-EOF
+  user_data                   = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
               nohup busybox httpd -f -p 8080 &
@@ -19,11 +19,11 @@ resource "aws_security_group" "webserver" {
   vpc_id      = "vpc-0609a33f6b97b90cd"
 
   ingress {
-    description      = "TLS from VPC"
-    from_port        = 8080
-    to_port          = 8080
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    description = "TLS from VPC"
+    from_port   = var.web_port
+    to_port     = var.web_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
