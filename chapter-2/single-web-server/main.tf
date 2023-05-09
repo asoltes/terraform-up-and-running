@@ -1,6 +1,6 @@
 resource "aws_instance" "webserver" {
   ami                         = "ami-0a72af05d27b49ccb"
-  instance_type               = "t2.micro"
+  instance_type               = "m6i.large"
   vpc_security_group_ids      = [aws_security_group.webserver.id]
   user_data                   = <<-EOF
               #!/bin/bash
