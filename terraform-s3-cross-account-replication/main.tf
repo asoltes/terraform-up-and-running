@@ -207,6 +207,29 @@ resource "aws_kms_key" "source_bucket_kms_key" {
     enable_key_rotation     = true
 }
 
+resource "aws_s3_bucket_replication_configuration" "replication" {
+  # Must have bucket versioning enabled first
+#   depends_on = [aws_s3_bucket_versioning.source]
+
+  role   = aws_iam_role.source.arn
+  bucket = aws_s3_bucket.source_bucket.id
+
+  rule {
+    id = "foobar"
+
+    filter {
+      prefix = "foo"
+    }
+
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.destination_bucket.arn
+      storage_class = "STANDARD"
+    }
+  }
+}
+
 
 ################################Destination Bucket Configurations##############################################
 
