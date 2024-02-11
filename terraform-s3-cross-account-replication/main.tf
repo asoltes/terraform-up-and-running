@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "source_bucket" {
   }
 }
 
-resource "aws_iam_policy" "source_bucket_new_kms_key_policy" {
+resource "aws_iam_policy" "source_new_kms" {
     count = var.use_new_kms_key ? 1 : 0
     name = "${var.source_bucket_name}-policy"
     policy = jsonencode(
@@ -109,7 +109,7 @@ resource "aws_iam_policy" "source_bucket_new_kms_key_policy" {
     )
 }
 
-resource "aws_iam_policy" "source_bucket_existing_kms_key_policy" {
+resource "aws_iam_policy" "source_existing_kms" {
     count = var.use_new_kms_key ? 0 : 1
     name = "${var.source_bucket_name}-policy"
     policy = jsonencode(
@@ -212,7 +212,7 @@ resource "aws_iam_policy" "source_bucket_existing_kms_key_policy" {
 }
 
 
-resource "aws_iam_role" "source_bucket_iam_role" {
+resource "aws_iam_role" "source" {
     name = "${var.source_bucket_name}-iam-role"
     assume_role_policy = jsonencode(
         {
@@ -229,9 +229,9 @@ resource "aws_iam_role" "source_bucket_iam_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "test-attach" {
-    # count      = var.use_new_kms_key ? 1 : 0
-    role       = aws_iam_role.source_bucket_iam_role.name
-    policy_arn = var.use_new_kms_key ? aws_iam_policy.source_bucket_new_kms_key_policy[0].arn : var.existing_source_kms_key
+    count      = var.use_new_kms_key ? 1 : 0
+    role       = aws_iam_role.source.name
+    policy_arn = var.use_new_kms_key ? aws_iam_policy.source_new_kms[0].arn : var.existing_source_kms_key
 }
 
 resource "aws_kms_key" "source_bucket_kms_key" {
