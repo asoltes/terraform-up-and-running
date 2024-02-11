@@ -15,23 +15,6 @@ resource "aws_iam_policy" "source_new_kms" {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "AllowTFstateAndLock",
-            "Action": [
-                "dynamodb:PutItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:GetItem",
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:PutObject"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-                "arn:aws:dynamodb:*:*:table/*tfstate*",
-                "arn:aws:s3:::*tfstate*/*",
-                "arn:aws:s3:::*tfstate*"
-            ]
-        },
-        {
             "Action": [
                 "s3:ListBucket",
                 "s3:GetReplicationConfiguration",
@@ -116,23 +99,6 @@ resource "aws_iam_policy" "source_existing_kms" {
         {
     "Version": "2012-10-17",
     "Statement": [
-        {
-            "Sid": "AllowTFstateAndLock",
-            "Action": [
-                "dynamodb:PutItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:GetItem",
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:PutObject"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-                "arn:aws:dynamodb:*:*:table/*tfstate*",
-                "arn:aws:s3:::*tfstate*/*",
-                "arn:aws:s3:::*tfstate*"
-            ]
-        },
         {
             "Action": [
                 "s3:ListBucket",
