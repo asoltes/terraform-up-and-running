@@ -5,6 +5,7 @@ pipeline {
     }
     options {
         ansiColor('xterm')
+        withAWS(profile: 'default')
     }
     environment {
         TP_LOG = "WARN"
