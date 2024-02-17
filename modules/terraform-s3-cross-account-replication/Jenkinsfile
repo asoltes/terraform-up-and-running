@@ -5,7 +5,7 @@ pipeline {
     }
     options {
         ansiColor('xterm')
-        withAWS(profile: 'jenkins')
+        withAWS(profile: 'default')
     }
     environment {
         TP_LOG = "WARN"
