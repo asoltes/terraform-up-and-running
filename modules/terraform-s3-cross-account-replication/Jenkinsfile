@@ -13,9 +13,9 @@ pipeline {
         SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
-            stage('modules/TerraformInit'){
+            stage('TerraformInit'){
             steps {
-                dir('terraform-s3-cross-account-replication'){
+                dir('modules/terraform-s3-cross-account-replication'){
                     sh "terraform init -input=false"
                     sh "echo \$PWD"
                     sh "whoami"
