@@ -11,7 +11,7 @@ terraform {
 provider "aws" {
   region = "ap-southeast-1"
   profile = "jenkins"
-  shared_credentials_files = ["/home/jenkins/.aws/config"]
+  shared_credentials_files = ["/var/lib/jenkins/.aws/config"]
 }
 
 data "aws_caller_identity" "current" {}
