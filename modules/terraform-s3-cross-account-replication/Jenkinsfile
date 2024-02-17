@@ -18,7 +18,7 @@ pipeline {
     stages {
             stage('TerraformInit'){
                 steps {
-                    withAWS(role: "JenkinsIAMRoleLocal",roleAccount: '885239713196', region:'ap-southeast-1', useNode: true) {
+                    withAWS(profile: 'default') {
 
                         dir('modules/terraform-s3-cross-account-replication'){
                         sh "terraform init -input=false"
@@ -48,7 +48,7 @@ pipeline {
 
         stage('TerraformPlan'){
             steps {
-                withAWS(role: "JenkinsIAMRoleLocal", roleAccount: '885239713196', region:'ap-southeast-1', useNode: true) {
+                withAWS(profile: 'default') {
 
                 dir('modules/terraform-s3-cross-account-replication/'){
                     script {
@@ -68,7 +68,7 @@ pipeline {
         
         stage('TerraformApply'){
             steps {
-                withAWS(role: "JenkinsIAMRoleLocal", roleAccount: '885239713196', region:'ap-southeast-1', useNode: true) {
+                withAWS(profile: 'default') {
                 script{
                     def apply = false
                     try {
