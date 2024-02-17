@@ -13,7 +13,7 @@ pipeline {
         SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
-            stage('TerraformInit'){
+            stage('modules/TerraformInit'){
             steps {
                 dir('terraform-s3-cross-account-replication'){
                     sh "terraform init -input=false"
@@ -41,7 +41,7 @@ pipeline {
 
         stage('TerraformPlan'){
             steps {
-                dir('terraform-s3-cross-account-replication/'){
+                dir('modules/terraform-s3-cross-account-replication/'){
                     script {
                         try {
                             sh "terraform workspace new ${params.WORKSPACE}"
@@ -68,7 +68,7 @@ pipeline {
                          currentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
-                        dir('terraform-s3-cross-account-replication/'){
+                        dir('modules/terraform-s3-cross-account-replication/'){
                             unstash "terraform-plan"
                             sh 'terraform apply terraform.tfplan' 
                         }
