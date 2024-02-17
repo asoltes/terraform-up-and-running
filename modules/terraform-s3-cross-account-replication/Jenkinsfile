@@ -12,8 +12,8 @@ pipeline {
         ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
         SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
 
-        TF_VAR_access_key = env.ACCESS_KEY
-        TF_VAR_secret_key = env.SECRET_KEY
+        TF_VAR_access_key = $ACCESS_KEY
+        TF_VAR_secret_key = $SECRET_KEY
     }
     stages {
             stage('TerraformInit'){
