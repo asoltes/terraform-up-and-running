@@ -10,6 +10,7 @@ terraform {
 
 provider "aws" {
   region = "ap-southeast-1"
+  profile = "jenkins"
 }
 
 data "aws_caller_identity" "current" {}
