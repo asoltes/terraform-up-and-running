@@ -40,3 +40,15 @@ variable "existing_destination_kms_key" {
   
 }
 
+variable "secret_key" {
+    type = string
+    description = "Use existing key kms key of destination bucket "
+  
+}
+
+variable "access_key" {
+    type = string
+    description = "Use existing key kms key of destination bucket "
+  
+}
+
