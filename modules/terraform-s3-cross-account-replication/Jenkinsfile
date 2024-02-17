@@ -3,8 +3,10 @@ pipeline {
     parameters {
         string(name: 'WORKSPACE', defaultValue: 'development', description:'setting up workspace for terraform')
     }
+    options {
+        ansiColor('xterm')
+    }
     environment {
-        TF_HOME = tool('terraform')
         TP_LOG = "WARN"
         PATH = "$TF_HOME:$PATH"
         ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
@@ -13,7 +15,7 @@ pipeline {
     stages {
             stage('TerraformInit'){
             steps {
-                dir('terraform-s3-cross-account-replication/'){
+                dir('terraform-s3-cross-account-replication'){
                     sh "terraform init -input=false"
                     sh "echo \$PWD"
                     sh "whoami"
@@ -21,21 +23,21 @@ pipeline {
             }
         }
 
-        stage('TerraformFormat'){
-            steps {
-                dir('terraform-s3-cross-account-replication/'){
-                    sh "terraform fmt -list=true -write=false -diff=true -check=true"
-                }
-            }
-        }
+        // stage('TerraformFormat'){
+        //     steps {
+        //         dir('terraform-s3-cross-account-replication'){
+        //             sh "terraform fmt -list=true -write=false -diff=true -check=true"
+        //         }
+        //     }
+        // }
 
-        stage('TerraformValidate'){
-            steps {
-                dir('terraform-s3-cross-account-replication/'){
-                    sh "terraform validate"
-                }
-            }
-        }
+        // stage('TerraformValidate'){
+        //     steps {
+        //         dir('terraform-s3-cross-account-replication'){
+        //             sh "terraform validate"
+        //         }
+        //     }
+        // }
 
         stage('TerraformPlan'){
             steps {
@@ -46,7 +48,7 @@ pipeline {
                         } catch (err) {
                             sh "terraform workspace select ${params.WORKSPACE}"
                         }
-                        sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
+                        sh "terraform plan \
                         -out terraform.tfplan;echo \$? > status"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }

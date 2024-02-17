@@ -13,7 +13,7 @@ provider "aws" {
 variable "user_names" {
   description = "Create IAM users with these names"
   type        = list(string)
-  default     = ["neo", "trinity", "andrew"]
+  default     = ["tiny", "trinity", "andrew"]
 }
 
 resource "aws_iam_user" "iam_usernames" {

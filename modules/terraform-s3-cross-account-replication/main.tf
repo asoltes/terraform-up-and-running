@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_s3_bucket" "source_bucket" {
   bucket = var.source_bucket_name
   
@@ -215,10 +217,10 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
   bucket = aws_s3_bucket.source_bucket.id
 
   rule {
-    id = "foobar"
+    id = "Replication to ${var.destination_bucket_name} to ${var.destination_region}"
 
     filter {
-      prefix = "foo"
+      prefix = "/"
     }
 
     status = "Enabled"
@@ -247,7 +249,14 @@ resource "aws_kms_key" "destination_bucket_kms_key" {
     description             = "${var.destination_bucket_name} KMS Key"
     deletion_window_in_days = 7
     enable_key_rotation     = true
-    policy = jsonencode(
+    # policy = aws_kms_key_policy.destination_bucket_kms_key_policy.id
+  
+}
+
+resource "aws_kms_key_policy" "destination_bucket_kms_key_policy" {
+  count  = var.use_new_kms_key ? 1 : 0
+  key_id = aws_kms_key.destination_bucket_kms_key[0].id
+  policy = jsonencode(
     {
     "Sid": "Enable cross account encrypt access for S3 Cross Region Replication",
     "Effect": "Allow",
