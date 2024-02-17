@@ -19,13 +19,12 @@ pipeline {
     stages {
             stage('TerraformInit'){
                 steps {
-                    withAWS(profile: 'default') {
+
 
                         dir('modules/terraform-s3-cross-account-replication'){
                         sh "terraform init -input=false"
                         sh "echo \$PWD"
                         sh "whoami"
-                        }
                     }
                 }
             }
@@ -49,8 +48,6 @@ pipeline {
 
         stage('TerraformPlan'){
             steps {
-                withAWS(profile: 'default') {
-
                 dir('modules/terraform-s3-cross-account-replication/'){
                     script {
                         try {
@@ -61,7 +58,6 @@ pipeline {
                         sh "terraform plan \
                         -out terraform.tfplan;echo \$? > status"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
-                        }
                     }
                 }
             }
@@ -69,7 +65,6 @@ pipeline {
         
         stage('TerraformApply'){
             steps {
-                withAWS(profile: 'default') {
                 script{
                     def apply = false
                     try {
@@ -84,7 +79,7 @@ pipeline {
                             unstash "terraform-plan"
                             sh 'terraform apply terraform.tfplan'
                             }
-                        }
+
                     }
                 }
             }
