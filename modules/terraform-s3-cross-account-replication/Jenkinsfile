@@ -17,14 +17,18 @@ pipeline {
     }
     stages {
             stage('TerraformInit'){
-            steps {
-                dir('modules/terraform-s3-cross-account-replication'){
-                    sh "terraform init -input=false"
-                    sh "echo \$PWD"
-                    sh "whoami"
+                steps {
+                    withAWS(roleAccount: '885239713196', region:'ap-southeast-1', useNode: true) {
+
+                        dir('modules/terraform-s3-cross-account-replication'){
+                        sh "terraform init -input=false"
+                        sh "echo \$PWD"
+                        sh "whoami"
+                        }
+                    }
                 }
             }
-        }
+
 
         // stage('TerraformFormat'){
         //     steps {
@@ -44,6 +48,8 @@ pipeline {
 
         stage('TerraformPlan'){
             steps {
+                withAWS(roleAccount: '885239713196', region:'ap-southeast-1', useNode: true) {
+
                 dir('modules/terraform-s3-cross-account-replication/'){
                     script {
                         try {
@@ -54,6 +60,7 @@ pipeline {
                         sh "terraform plan \
                         -out terraform.tfplan;echo \$? > status"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
+                        }
                     }
                 }
             }
@@ -61,6 +68,7 @@ pipeline {
         
         stage('TerraformApply'){
             steps {
+                withAWS(roleAccount: '885239713196', region:'ap-southeast-1', useNode: true) {
                 script{
                     def apply = false
                     try {
@@ -73,7 +81,8 @@ pipeline {
                     if(apply){
                         dir('modules/terraform-s3-cross-account-replication/'){
                             unstash "terraform-plan"
-                            sh 'terraform apply terraform.tfplan' 
+                            sh 'terraform apply terraform.tfplan'
+                            }
                         }
                     }
                 }
