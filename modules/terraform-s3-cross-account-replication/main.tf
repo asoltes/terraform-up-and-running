@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "ap-southeast-1"
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "source_bucket" {
