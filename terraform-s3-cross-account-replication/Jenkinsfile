@@ -48,6 +48,7 @@ pipeline {
 
         stage('TerraformPlan'){
             steps {
+                withAWS(role: 'JenkinsIAMRoleLocal', roleAccount: '885239713196', region:'ap-southeast-1') {
                 dir('terraform-s3-cross-account-replication/'){
                     script {
                         try {
