@@ -5,7 +5,6 @@ pipeline {
     }
     options {
         ansiColor('xterm')
-        withAWS(profile: 'jenkins')
     }
     environment {
         TP_LOG = "WARN"
@@ -21,7 +20,7 @@ pipeline {
                 steps {
 
 
-                        dir('modules/terraform-s3-cross-account-replication'){
+                        dir('terraform-s3-cross-account-replication'){
                         sh "terraform init -input=false"
                         sh "echo \$PWD"
                         sh "whoami"
