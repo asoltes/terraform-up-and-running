@@ -4,10 +4,18 @@ repos:
     hooks:
       - id: terraform-docs-go
         args: ["markdown", "table", "--output-file", "README.md", "./"]
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: "v1.74.1"
+  # - repo: https://github.com/antonbabenko/pre-commit-terraform
+  #   rev: "v1.74.1"
+  #   hooks:
+  #     - id: terraform_fmt
+  #     - id: terraform_tflint
+  #     - id: terraform_validate
+  #     - id: terraform_tfsec
+  
+  - repo: local
     hooks:
-      - id: terraform_fmt
-      - id: terraform_tflint
-      - id: terraform_validate
-      - id: terraform_tfsec
+    -   id: lower-case-only
+        name: lower case only
+        entry: filenames must be lower-case or lower_case only
+        language: fail
+        files: '[^a-z0-9._/-]'
