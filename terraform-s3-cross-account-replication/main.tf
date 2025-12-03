@@ -289,7 +289,3 @@ resource "aws_kms_key_policy" "destination_bucket_kms_key_policy" {
       "Resource" : "*"
   })
 }
-
-
-
-
