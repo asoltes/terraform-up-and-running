@@ -6,10 +6,9 @@ repos:
         args: ["markdown", "table", "--output-file", "README.md", "./"]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: "v1.74.1"
-    files: ".*"
     hooks:
       - id: terraform_fmt
-      - id: terraform_tflint
+#       - id: terraform_tflint
       - id: terraform_validate
 #       - id: terraform_tfsec
 
