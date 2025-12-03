@@ -1,0 +1,3 @@
+#!/bin/sh
+# Install pre-commit hooks automatically on checkout
+pre-commit install || echo "pre-commit not installed. Run: pip install pre-commit && pre-commit install"
